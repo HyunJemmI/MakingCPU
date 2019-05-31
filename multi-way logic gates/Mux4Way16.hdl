@@ -1,0 +1,49 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux4Way16.hdl
+
+/**
+ * 4-way 16-bit multiplexor:
+ * out = a if sel == 00
+ *       b if sel == 01
+ *       c if sel == 10
+ *       d if sel == 11
+ */
+
+CHIP Mux4Way16 {
+    IN a[16], b[16], c[16], d[16], sel[2];
+    OUT out[16];
+
+    PARTS:
+    // Put your code here:
+
+	Not(in=sel[0], out=notsel0);
+	Not(in=sel[1], out=notsel1);
+	//And(a=notsel1, b=notsel0, out=not01);
+	And(a=notsel1, b=sel[0], out=not1but0);
+	//And(a=sel[1], b=notsel0, out=not0but1);
+	And(a=sel[1], b=sel[0], out=yes01);
+	Mux16(a=a, b=d, sel=yes01, out=out1);
+	Mux16(a=b, b=c, sel=not1but0, out=out2);
+	Or16(a=out1, b=out2, out=out);
+
+}
+
+/*
+ 4 Way Mux를 만드는 두 가지 방법
+
+    1. 2-to-4 Decoder와 벨브처럼 동작하는 AND를 이용해서 만들기
+    2. 기존에 구현했던 Mux 3개를 계층적으로 구성해서 만들기
+
+    1번은 좀 기계적인 방법이긴 하지만, 각각의 Minterm들을 구해 더해줘야 하는 방식이므로
+    당연히 항들이 많아지고 코드가 길어진다. 실용적인 면에서 따지자면 3Way부터는 못쓸듯
+
+    2번을 구현하는 코드는 아래와 같다. 코드가 훨씬 짧고 명료하다
+
+    Mux16(a=a, b=b, sel=sel[0], out=x);
+    Mux16(a=c, b=d, sel=sel[0], out=y);
+    Mux16(a=x, b=y, sel=sel[1], out=out);
+    
+
+ */

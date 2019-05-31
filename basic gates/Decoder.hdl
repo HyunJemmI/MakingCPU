@@ -1,0 +1,15 @@
+// Modified by Minho Kim (9 Oct 2014)
+
+/** 
+ * Decoder. out={0,1} if in==0, out={1,0} if in==1
+ */
+
+CHIP Decoder {
+    IN in;
+    OUT out[2];
+
+    PARTS:
+    // Put your code here:
+    Not(in=in, out=out[0], out=notin);
+    Not(in=notin, out=out[1]);
+}

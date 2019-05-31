@@ -1,0 +1,40 @@
+// Modified by Minho Kim (9 Oct 2014)
+
+/** 
+ * Decoder4Way = 2-to-4 Decoder
+
+ * Decoder4Way. d={0,0,0,1} if in==00,
+ *              d={0,0,1,0} if in==01,
+ *              d={0,1,0,0} if in==10,
+ *              d={1,0,0,0} if in==11
+ */
+
+CHIP Decoder4Way {
+    IN in[2];
+    OUT out[4];
+
+    PARTS:
+    // Put your code here:
+	Not(in=in[0], out=notin0);
+	Not(in=in[1], out=notin1);
+	And(a=notin1, b=notin0, out=out[0]);
+	And(a=notin1, b=in[0], out=out[1]);
+	And(a=in[1], b=notin0, out=out[2]);
+	And(a=in[1], b=in[0], out=out[3]);
+
+}
+
+/*
+1-to-2 decoder를 계층적으로 구성하여 2-to-4 decoder를 만들 수 있다
+근데 이걸 코드로 짜는게 좀 어려웠다..
+
+Decoder(in=in[0], out[0]=out0, out[1]=out1);
+Decoder(in=in[0], out[0]=out2, out[1]=out3);
+Decoder(in=in[1], out[0]=open01, out[1]=open23);
+
+And(a=out0, b=open01, out=out[0]);
+And(a=out1, b=open01, out=out[1]);
+And(a=out2, b=open23, out=out[2]);
+And(a=out3, b=open23, out=out[3]);
+
+*/ 

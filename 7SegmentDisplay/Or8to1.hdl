@@ -1,0 +1,24 @@
+ /**
+ * 8 to 1 Or gate:
+ * out = 0 if in[0..15]!=1
+ *       1 otherwise
+ */
+
+// Encoder의 구현을 편하게 하기 위해 임의로 구현한 8 to 1 Or Gate이다
+// input 값으로 들어간 어떤 값이 1이면 output이 1이 된다
+
+CHIP Or8to1 {
+    IN in[8];
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Or(a=in[0], b=in[1], out=mid0);
+    Or(a=mid0, b=in[2], out=mid1);
+    Or(a=mid1, b=in[3], out=mid2);
+    Or(a=mid2, b=in[4], out=mid3);
+    Or(a=mid3, b=in[5], out=mid4);
+    Or(a=mid4, b=in[6], out=mid5);
+    Or(a=mid5, b=in[7], out=out);
+
+}

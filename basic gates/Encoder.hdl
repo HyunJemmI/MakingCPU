@@ -1,0 +1,19 @@
+// Modified by Minho Kim (9 Oct 2014)
+
+/** 
+ * Encoder. out=0 if in==01, out=1 if in==10
+ */
+
+CHIP Encoder {
+    IN in[2];
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    // 인코더를 디자인 할 떄 invalid input들은 그냥 내 맘대로 디자인
+    // 물론 mux나 decoder를 이용하면 invalid input들을 처리할 수 있지만
+    // 일단은 내가 편한대로 맘대로 디자인해보는 걸로!
+    Not(in=in[0], out=x);
+    And(a=x, b=in[1], out=out);
+
+}

@@ -1,0 +1,137 @@
+// Modified by Minho Kim (15 Oct 2014)
+
+/** 
+ * Decoder7Seg.
+ */
+
+CHIP Decoder7Seg {
+    IN in[4];
+    OUT out[7];
+
+    PARTS:
+    // Put your code here:
+	// Use the following pins (w, notw, x, notx, y, noty, z, notz) for easier implementation
+	Not(in=in[3],out=notw);	// NOT(w)
+	Not(in=notw,out=w);		// w (==out[3])
+	Not(in=in[2],out=notx);	// NOT(x)
+	Not(in=notx,out=x);		// x (==out[2])
+	Not(in=in[1],out=noty);	// NOT(y)
+	Not(in=noty,out=y);		// y (==out[1])
+	Not(in=in[0],out=notz);	// NOT(z)
+	Not(in=notz,out=z);		// z (==out[0])
+
+//	And4to1(in[0]= , in[1]= , in[2]= , in[3]= , out= );
+
+	// a 구현
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=notz , out=a0 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=notz , out=a1 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=z , out=a2 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=z , out=a3 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=notz , out=a4 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=z , out=a5 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=notz , out=a6 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=z , out=a7 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=notz , out=a8 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=notz , out=a9 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=notz , out=a10 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=z , out=a11 );
+
+	// a0~a11 묶어주고 out[6]로 내보내기
+	Or12to1(in[0]=a0 ,in[1]=a1 ,in[2]=a2 ,in[3]=a3 ,in[4]=a4 ,in[5]=a5 ,in[6]=a6 ,in[7]=a7 ,in[8]=a8 ,in[9]=a9 ,in[10]=a10 ,in[11]=a11 , out=out[6] );
+
+	// b 구현
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=notz , out=b0 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=z , out=b1 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=notz , out=b2 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=z , out=b3 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=notz , out=b4 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=z , out=b5 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=notz , out=b6 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=z , out=b7 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=notz , out=b8 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=z , out=b9 );
+
+	// b0~b9 묶어주고 out[5]으로 내보내기
+	Or10to1(in[0]=b0 ,in[1]=b1 ,in[2]=b2 ,in[3]=b3 ,in[4]=b4 ,in[5]=b5 ,in[6]=b6 ,in[7]=b7 ,in[8]=b8 ,in[9]=b9 ,out=out[5]);
+
+	// c 구현
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=notz , out=c0 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=z , out=c1 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=z , out=c2 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=notz , out=c3 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=z , out=c4 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=notz , out=c5 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=z , out=c6 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=notz , out=c7 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=z , out=c8 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=notz , out=c9 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=z , out=c10 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=z , out=c11 );
+
+	// c0~c11 묶어주고 out[4]로 내보내기 
+	Or12to1(in[0]=c0 ,in[1]=c1 ,in[2]=c2 ,in[3]=c3 ,in[4]=c4 ,in[5]=c5 ,in[6]=c6 ,in[7]=c7 ,in[8]=c8 ,in[9]=c9 ,in[10]=c10 ,in[11]=c11 , out=out[4] );
+
+	// d 구현
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=notz , out=d0 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=notz , out=d1 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=z , out=d2 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=z , out=d3 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=notz , out=d4 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=notz , out=d5 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=z , out=d6 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=notz , out=d7 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=z , out=d8 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=notz , out=d9 );
+
+	// d0~d9 묶어주고 out[3]으로 내보내기
+	Or10to1(in[0]=d0 ,in[1]=d1 ,in[2]=d2 ,in[3]=d3 ,in[4]=d4 ,in[5]=d5 ,in[6]=d6 ,in[7]=d7 ,in[8]=d8 ,in[9]=d9 ,out=out[3]);
+
+	// e 구현
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=notz , out=e0 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=notz , out=e1 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]= notz, out=e2 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=notz , out=e3 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=notz , out=e4 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=z , out=e5 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=notz , out=e6 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=z , out=e7 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=notz , out=e8 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=z , out=e9 );
+
+	// e0~e9 묶어주고 out[2]으로 내보내기
+	Or10to1(in[0]=e0 ,in[1]=e1 ,in[2]=e2 ,in[3]=e3 ,in[4]=e4 ,in[5]=e5 ,in[6]=e6 ,in[7]=e7 ,in[8]=e8 ,in[9]=e9 ,out=out[2]);
+
+	// f 구현
+	And4to1(in[0]=notw , in[1]=notx , in[2]=noty , in[3]=notz , out=f0 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=notz , out=f1 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=z , out=f2 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=notz , out=f3 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=notz , out=f4 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=z , out=f5 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=notz , out=f6 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=z , out=f7 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=notz , out=f8 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=notz , out=f9 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=z , out=f10 );
+
+	// f0~f10 묶어주고 out[1]로 내보내기
+	Or11to1(in[0]=f0 ,in[1]=f1 ,in[2]=f2 ,in[3]=f3 ,in[4]=f4 ,in[5]=f5 ,in[6]=f6 ,in[7]=f7 ,in[8]=f8 ,in[9]=f9 , in[10]=f10, out=out[1]);
+
+	// g 구현
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=notz , out=g0 );
+	And4to1(in[0]=notw , in[1]=notx , in[2]=y , in[3]=z , out=g1 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=notz , out=g2 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=noty , in[3]=z , out=g3 );
+	And4to1(in[0]=notw , in[1]=x , in[2]=y , in[3]=notz , out=g4 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=notz , out=g5 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=noty , in[3]=z , out=g6 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=notz , out=g7 );
+	And4to1(in[0]=w , in[1]=notx , in[2]=y , in[3]=z , out=g8 );
+	And4to1(in[0]=w , in[1]=x , in[2]=noty , in[3]=z , out=g9 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=notz , out=g10 );
+	And4to1(in[0]=w , in[1]=x , in[2]=y , in[3]=z , out=g11 );
+
+	// g0~g11 묶어주고 out[0]으로 내보내기
+	Or12to1(in[0]=g0 ,in[1]=g1 ,in[2]=g2 ,in[3]=g3 ,in[4]=g4 ,in[5]=g5 ,in[6]=g6 ,in[7]=g7 ,in[8]=g8 ,in[9]=g9 ,in[10]=g10 ,in[11]=g11 , out=out[0] );
+
+}

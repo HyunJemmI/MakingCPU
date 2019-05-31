@@ -1,0 +1,39 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux4Way.hdl
+
+/**
+ * 4-way demultiplexor:
+ * {a, b, c, d} = {in, 0, 0, 0} if sel == 00
+ *                {0, in, 0, 0} if sel == 01
+ *                {0, 0, in, 0} if sel == 10
+ *                {0, 0, 0, in} if sel == 11
+ */
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    // Put your code here:
+    DMux(in=in, sel=sel[1],a=x,b=y);
+    DMux(in=x, sel=sel[0],a=a,b=b);
+    DMux(in=y, sel=sel[0],a=c,b=d);
+    
+
+}
+
+/*
+구현하는 방법
+
+1. 3개의 DMUX계층적 활용 (위 코드 참조)
+2. 2-to-4 Decoder 활용 (아래 코드 참조)
+
+Decoder4Way(in=sel, out[0]=sel0, out[1]=sel1, out[2]=sel2, out[3]=sel3);
+And(a=sel0, b=in, out=a);
+And(a=sel1, b=in, out=b);
+And(a=sel2, b=in, out=c);
+And(a=sel3, b=in, out=d);
+
+*/

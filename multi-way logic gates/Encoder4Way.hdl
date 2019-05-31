@@ -1,0 +1,48 @@
+// Modified by Minho Kim (9 Oct 2014)
+
+/** 
+ * Encoder4Way. out=00 if in==0001,
+ *              out=01 if in==0010,
+ *              out=10 if in==0100,
+ *              out=11 if in==1000,
+ */
+
+CHIP Encoder4Way {
+    IN in[4];
+    OUT out[2];
+
+    PARTS:
+    // Put your code here:
+    // 이 부분은 boolean Expression이 좀 중요한데,
+    
+    /*
+    
+     그냥 곧이 곧대로 Truth Table을 작성하면
+     out1 = (in[0](XOR)in[1])(~in[2])(~in[3])
+     out0 = (in[0](XOR)in[2])(~in[1])(~in[3])
+     가 되지만, 
+
+     이걸 조금만 "유효한 input에 대해" 조금만 수식을 변형하면 
+     out1 = in[0]+in[1]
+     out2 = in[0]+in[2]
+     와 동치임을 알 수 있다
+    
+    */
+
+   	Xor(a=in[2], b=in[3], out=xor23);
+	Nor(a=in[0], b=in[1], out=nor01);
+	And(a=nor01, b=xor23, out=out[1]);
+	Xor(a=in[1], b=in[3], out=xor13);
+	Nor(a=in[0], b=in[2], out=nor02);
+	And(a=nor02, b=xor13, out=out[0]);
+
+}
+
+/*
+유효한 input에 대해 식을 변형한 값
+
+Or(a=in[1], b=in[3], out=out[0]);
+Or(a=in[2], b=in[3], out=out[1]);
+
+
+*/

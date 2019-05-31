@@ -1,0 +1,109 @@
+// Modified by Minho Kim (15 Oct 2014)
+
+/** 
+ * Encoder16. out=0000 if in==0000 0000 0000 0001,
+ *            out=0001 if in==0000 0000 0000 0010,
+ *            out=0010 if in==0000 0000 0000 0100,
+ *            out=0011 if in==0000 0000 0000 1000,
+ *                           :
+ *                           :
+ *            out=1111 if in==1000 0000 0000 0000,
+ */
+
+CHIP Encoder16 {
+    IN in[16];
+    OUT out[4];
+
+    PARTS:
+    // Put your code here:
+    // Not 16과 Not, 그리고 Or gate로 구현하는 방법
+    // 4 to 2 encoder를 계층적으로 구성하는 방법
+    Not(in=in[0], out=nd0);
+    Not(in=in[1], out=nd1);
+    Not(in=in[2], out=nd2);
+    Not(in=in[3], out=nd3);
+    Not(in=in[4], out=nd4);
+    Not(in=in[5], out=nd5);
+    Not(in=in[6], out=nd6);
+    Not(in=in[7], out=nd7);
+    Not(in=in[8], out=nd8);
+    Not(in=in[9], out=nd9);
+    Not(in=in[10], out=nd10);
+    Not(in=in[11], out=nd11);
+    Not(in=in[12], out=nd12);
+    Not(in=in[13], out=nd13);
+    Not(in=in[14], out=nd14);
+    Not(in=in[15], out=nd15);
+
+    Not(in=nd0, out=d0);    
+    Not(in=nd1, out=d1);    
+    Not(in=nd2, out=d2);    
+    Not(in=nd3, out=d3);    
+    Not(in=nd4, out=d4);    
+    Not(in=nd5, out=d5);    
+    Not(in=nd6, out=d6);    
+    Not(in=nd7, out=d7);    
+    Not(in=nd8, out=d8);    
+    Not(in=nd9, out=d9);    
+    Not(in=nd10, out=d10);    
+    Not(in=nd11, out=d11);    
+    Not(in=nd12, out=d12);    
+    Not(in=nd13, out=d13);    
+    Not(in=nd14, out=d14);    
+    Not(in=nd15, out=d15);    
+    
+    // And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=w0);
+    // And16to1(in[0]= , in[1]= , in[2]= , in[3]= , in[4]= , in[5]= , in[6]= , in[7], in[8]= , in[9]= , in[10]= , in[11]= , in[12]= , in[13]= , in[14]= , out=w1);
+    // And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=w0);
+
+// w 값 도출
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=d8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=w0);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]=d9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=w1);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=d10, in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=w2);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=d11, in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=w3);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=d12, in[13]= nd13, in[14]= nd14, in[15]=nd15, out=w4);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]=d13, in[14]= nd14, in[15]=nd15, out=w5);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]=d14, in[15]=nd15, out=w6);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]=nd14, in[15]=d15, out=w7);
+
+    Or8to1(in[0]=w0, in[1]=w1, in[2]=w2, in[3]=w3, in[4]=w4, in[5]=w5, in[6]=w6, in[7]=w7, out=out[3] );    
+
+// x 값 도출
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=d4, in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=x0);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=d5, in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=x1);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=d6, in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=x2);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=d7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=x3);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=d12, in[13]= nd13, in[14]= nd14, in[15]=nd15, out=x4);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]=d13, in[14]= nd14, in[15]=nd15, out=x5);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]=d14, in[15]=nd15, out=x6);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=d15, out=x7);
+
+    Or8to1(in[0]=x0, in[1]=x1, in[2]=x2, in[3]=x3, in[4]=x4, in[5]=x5, in[6]=x6, in[7]=x7, out=out[2] );    
+
+// y 값 도출
+    
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=d2, in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=y0);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=d3, in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=y1);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=d6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=y2);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=d7, in[8]=nd8, in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=y3);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=d10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=y4);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=d11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=y5);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= d14, in[15]=nd15, out=y6);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=d15, out=y7);
+
+    Or8to1(in[0]=y0, in[1]=y1, in[2]=y2, in[3]=y3, in[4]=y4, in[5]=y5, in[6]=y6, in[7]=y7, out=out[1] );    
+
+// z값 도출
+    
+    And16to1(in[0]=nd0 , in[1]=d1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=z0);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=d3, in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=z1);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=d5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=z2);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=d7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=z3);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]=d9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=z4);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=d11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=nd15, out=z5);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]=d13, in[14]= nd14, in[15]=nd15, out=z6);
+    And16to1(in[0]=nd0 , in[1]=nd1 , in[2]=nd2 , in[3]=nd3 , in[4]=nd4 , in[5]=nd5 , in[6]=nd6 , in[7]=nd7, in[8]=nd8 , in[9]= nd9, in[10]=nd10 , in[11]=nd11 , in[12]=nd12 , in[13]= nd13, in[14]= nd14, in[15]=d15, out=z7);
+
+    Or8to1(in[0]=z0, in[1]=z1, in[2]=z2, in[3]=z3, in[4]=z4, in[5]=z5, in[6]=z6, in[7]=z7, out=out[0] );    
+
+}

@@ -1,0 +1,32 @@
+ /**
+ * 16 to 1 And gate:
+ * out = 1 if in[0..15]==1
+ *       0 otherwise
+ */
+
+// Encoder의 구현을 편하게 하기 위해 임의로 구현한 16 to 1 And Gate이다
+// input 값으로 들어간 모든 값이 1이어야만 output이 1이 된다
+
+CHIP And16to1 {
+    IN in[16];
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    And(a=in[0], b=in[1], out=mid0);
+    And(a=mid0, b=in[2], out=mid1);
+    And(a=mid1, b=in[3], out=mid2);
+    And(a=mid2, b=in[4], out=mid3);
+    And(a=mid3, b=in[5], out=mid4);
+    And(a=mid4, b=in[6], out=mid5);
+    And(a=mid5, b=in[7], out=mid6);
+    And(a=mid6, b=in[8], out=mid7);
+    And(a=mid7, b=in[9], out=mid8);
+    And(a=mid8, b=in[10], out=mid9);
+    And(a=mid9, b=in[11], out=mid10);
+    And(a=mid10, b=in[12], out=mid11);
+    And(a=mid11, b=in[13], out=mid12);
+    And(a=mid12, b=in[14], out=mid13);
+    And(a=mid13, b=in[15], out=out);
+
+}
